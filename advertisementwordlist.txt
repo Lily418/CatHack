@@ -1,0 +1,4 @@
+deals
+savings
+$
+£
