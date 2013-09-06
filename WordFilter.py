@@ -4,7 +4,7 @@ from os.path import expanduser
 
 class WordFilter:
 	"""A really simple swear filter, the word list isn't massive and it doesn't handle unicode bypasses or any other simple transforms
-	perhaps consider forking https://github.com/jared-mess/profanity-filter which is where I took the word list from"""
+	perhaps consider forking https://github.com/jared-mess/profanity-filter which is where I took the word list from or using a better lib"""
 	
 	textFileLocation = expanduser("~") + "/CatHack/"
 
@@ -27,8 +27,7 @@ class WordFilter:
 	def textIsClean(self, text):
 		text = text.lower()
 		for word in self.wordList:
-			if search(word, text) != None:
-				print(word + " matched " + text)
+			if search("\b" + word, text + "\b") != None:
 				return False
 
 		return True
