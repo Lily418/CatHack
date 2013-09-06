@@ -21,7 +21,7 @@ class StreamRequest(TwythonStreamer):
             self.streamListener.tweetReceived(data)
 
     def on_error(self, status_code, data):
-        print status_code
+        print(status_code)
 
     def close(self):
         self.disconnect()

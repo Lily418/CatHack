@@ -1,14 +1,15 @@
-import thread
+from threading import Thread
 from StreamRequest import StreamRequest 
 from CatStreamListener import CatStreamListener
 
 streamRequest = StreamRequest.createStream("cat, cats",  CatStreamListener());
-thread.start_new_thread(streamRequest.startStream, ())
+tweetStream = Thread(target=streamRequest.startStream)
+tweetStream.start()
 
 blocking = True
 
 while blocking:
-	s = raw_input('--> ')
+	s = input('--> ')
 	if s == "exit":
 		blocking = False
 
