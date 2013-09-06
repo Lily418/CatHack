@@ -32,4 +32,7 @@ class WordFilter:
 
 		return True
 
+	def filterTweet(self, data):
+		return self.textIsClean(data["text"])
+
 		

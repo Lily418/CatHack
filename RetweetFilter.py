@@ -3,8 +3,13 @@ from re import search
 
 class RetweetFilter:
 
-	def __init__(self):
+	def __init__(self, cacheSize):
+		self.cacheSize = cacheSize
 		self.tweetCache = deque()
+
+	def filterTweet(self, data):
+		return self.checkAndCacheTweet(data['text'])
+
 
 	def checkAndCacheTweet(self, text):
 
@@ -28,7 +33,7 @@ class RetweetFilter:
 
 
 		
-		if len(self.tweetCache) < 10 ** 4:
+		if len(self.tweetCache) < self.cacheSize:
 			self.tweetCache.append(wordList)
 		else:
 			self.tweetCache.popleft()

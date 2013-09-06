@@ -1,17 +1,19 @@
-import re
-
-from guess_language import guess_language
-from re import search
 from WordFilter import WordFilter
 from RetweetFilter import RetweetFilter
-
+from KeywordFilter import KeywordFilter
+from LanguageFilter import LanguageFilter
+from FollowerCountFilter import FollowerCountFilter
 
 class CatStreamListener:
 	"""For the contents of data see https://dev.twitter.com/docs/platform-objects/tweets"""
 
 	def __init__(self):
-		self.wordFilter = WordFilter()
-		self.retweetFilter = RetweetFilter()
+		self.filters = list()
+		self.filters.append(FollowerCountFilter(2000))
+		self.filters.append(WordFilter())
+		self.filters.append(KeywordFilter(("cat", "cats"), 1))
+		self.filters.append(LanguageFilter("en"))
+		self.filters.append(RetweetFilter(10 ** 4))
 
 	
 	
@@ -21,29 +23,12 @@ class CatStreamListener:
 				self.pushTweet(data)
 
 	def filterTweet(self, data):
-
-		messageInLowercase = data['text'].lower()	
-		messageWithoutUrls = self.removeLinks(messageInLowercase)	
-
-		if data['user']['followers_count'] < 2000:
-			return False
-
-		if search("cat", messageInLowercase) == None and search("cats", messageInLowercase) == None:
-			return False
-
-		if guess_language(messageWithoutUrls) != "en":
-			print("NOT ENGLISH: " +  data['text'])
-			return False
-
-		if self.wordFilter.textIsClean(messageInLowercase) == False:
-			print("SENSORED: " +  data['text'])
-			return False
-
-		if not self.retweetFilter.checkAndCacheTweet(messageWithoutUrls):
-			print("RETWEET: " +  data['text'])
-			return False
 		
-		
+		for f in self.filters:
+			if not f.filterTweet(data):
+				return False
+
+
 		return True
 		
 
@@ -51,6 +36,4 @@ class CatStreamListener:
 		print(data['text'])
 		return;
 
-	def removeLinks(self, text):
-		"""This Regex taken from http://stackoverflow.com/questions/11331982/how-to-remove-any-url-within-a-string-in-python"""
-		return re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+
