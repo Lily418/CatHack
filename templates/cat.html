@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>A Simple Example</title>
+	
+	</script><script type="text/javascript" src="static/js/socket.io.js"></script>
+	<script>
+WEB_SOCKET_DEBUG = true;
+var socket = io.connect('/CatTweets');
+
+socket.on('tweet', function (tweet) {
+    alert(tweet);
+});
+
+	</script>
+
+  </head>
+
+  <body>
+	<h1>CATS ARE COOL!</h1>
+
+  </body>
+
+</html>
+
